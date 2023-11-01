@@ -40,3 +40,19 @@
 .read-the-docs {
   color: #888;
 }
+
+.live-cursors-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  background-color: transparent;
+  height: 100vh;
+}
+
+.moving {
+  position: absolute;
+  z-index: 20;
+  margin: 0;
+  margin-top: 3px;
+}

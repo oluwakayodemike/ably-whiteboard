@@ -28,3 +28,209 @@
   background-color: #292727c7;
   margin-right: 10px;
 }
+
+
+
+/* ediitiititi */
+
+.heading{
+  color: #6e07f3;
+  text-align: center  ;
+}
+
+/* .kabanMain {
+ 
+} */
+
+
+
+.homeLink {
+  color: white;
+}
+
+.columnsContainer {
+  display: flex;
+  flex-direction: row;
+  width: 1200px;
+  overflow: scroll;
+}
+
+.kanbanBoard {
+  display: flex; 
+  border-radius: 10px;
+  margin-top: 2px;
+  background-color: #defaf1;
+  padding: 10px 60px;
+  width: 100%;
+  
+}
+
+.inputNewGroup {
+  line-height: 1.5;
+  border-radius: 10px;
+  margin-bottom: 2px;
+  padding:4px 4px;
+  border: 1px solid #6e07f3;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+} 
+
+.button {
+  border-radius: 10px;
+  color: white;
+  padding:4px 8px;
+  font-size: 1.1em;
+  background: linear-gradient(to right, #6e07f3, #5BE9B9);
+  margin-left: 10px;
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+}
+
+.button:hover {
+  background: linear-gradient(90deg, #6e07f3 0%, #5BE9B9 62%, #5BE9B9 100%);
+}
+
+.channelHeader {
+  font-weight: bold;
+  color: white;
+  font-size: 48px;
+  position: absolute;
+  top: 70px;
+  left: 850px;
+}
+
+.columnHeader {
+  font-weight: bold;
+  font-size: 1rem;
+  margin-left: 150px;
+  border-radius: 5px;
+  padding: 4px 20px;
+  margin-bottom: 30px;
+  line-height: 2;
+  color: white;
+  background: linear-gradient(90deg,  #aa53f2 0%, 62%, #7061f1 100%);
+}
+
+.columnHeaderInput {
+  position: absolute;
+  top: 105px;
+  left: 250px;
+  font-size: 1.4rem;
+  line-height: 1.5;
+  border-radius: 6px;
+  margin-bottom: 2px;
+  padding:3px 14px;
+  border: 1px solid #6e07f3;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+}
+
+.taskCard {
+  display: flex;
+  flex-direction: column;
+  border-radius: 5px;
+  margin: 0;
+  line-height: 1.5;
+  color: white;
+  padding: 8px 4px;
+}
+
+.taskTitle {
+  margin-top: 0;
+  margin-bottom: 4px;
+  font-size: 1.4rem;
+  font-weight: 400;
+}
+
+.taskInput {
+  height: 23px;
+  padding-left: 2px; 
+  width: 90%;
+  position: relative;
+  bottom: 90px;
+  color: black;
+}
+
+.taskButton {
+  width: 86px;
+  font-weight: bold;
+  font-size: 14px;
+  padding-bottom: 4px;
+  align-self: center;
+  height: 34px;
+  border-radius: 5px;
+  color: black;
+  background-color: white;
+  margin-bottom: 4px;
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+}
+.taskButton:hover {
+  font-size: 15px;
+}
+
+.taskButtonDelete {
+  width: 84px;
+  font-size: 14px;
+  align-self: center;
+  height: 34px;
+  border-radius: 5px;
+  padding-bottom: 4px;
+  background-color: rgb(197, 0, 0);
+  color: white;
+  box-shadow: inset 0 0 30px #9f0707; 
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+}
+.taskButtonDelete:hover {
+  font-size: 15px;
+}
+
+.id {
+  text-align: right;
+  color:#e1e1e1;
+}
+
+@media screen and (max-width: 1700px) {
+  .kabanMain {
+    width: 700px;
+  }
+  .columnHeader {
+    font-size: 12px;
+  }
+}
+
+@media screen and (max-width: 1600px) {
+  .kabanMain {
+    width: 600px;
+  }
+
+}
+
+@media screen and (max-width: 1450px) {
+  .kabanMain {
+    width: 500px;
+  }
+  .taskButton & .taskButtonDelete {
+    width: 80px;
+    height: 25px;
+    font-size: 12px;
+  }
+
+  .columnHeader {
+    font-size: 10px;
+  }
+}
+
+
+@media screen and (max-width: 1020px) {
+ .kabanMain {
+  width: 400px;
+ }
+ .taskButton & .taskButtonDelete {
+  width: 60px;
+  height: 20px;
+  font-size: 10px;
+ }
+}
+
+@media screen and (max-width: 750px) {
+  .kabanMain {
+    width: 300px;
+  }
+}

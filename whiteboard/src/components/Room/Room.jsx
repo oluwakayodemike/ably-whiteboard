@@ -1,6 +1,12 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo, useContext } from 'react';
 import "./Room.css"
 // import Header from "./Header/Header"
+import Ably from "ably/promises";
+import { mockNames } from "../../utils/mockNames";
+import { colours } from "../../utils/helper";
+import useSpaceMembers from "../../utils/useMembers";
+import { MemberCursors, YourCursor } from "../../utils/Cursor";
+import { SpacesContext } from "../../utils/SpacesContext";
 import Board from "./WhiteBoard/Board";
 import Select from "../../assets/ToolBar/select_cursor.svg";
 import Pencil from "../../assets/ToolBar/pencil.svg";
@@ -10,6 +16,10 @@ import Line from "../../assets/ToolBar/line.svg";
 import Undo from "../../assets/ToolBar/undo.svg";
 import Redo from "../../assets/ToolBar/redo.svg";
 
+
+const mockName = () => mockNames[Math.floor(Math.random() * mockNames.length)];
+// const realtime = new Ably.Realtime({ key: '2G93Ow.tGqEGw:rLw9dV_6eqF8n7aX2Cx4WtIq2MX5R5-NT-QplBJwsGo' });
+
 const Whiteboard = () => {
     const canvas = useRef(null);
     const ctx = useRef(null);
@@ -17,6 +27,27 @@ const Whiteboard = () => {
     const [color, setColor] = useState("black");
     const [elements, setElements] = useState([]);
     const [history, setHistory] = useState([]);
+
+    const name = useMemo(mockName, []);
+    /** 💡 Select a color to assign randomly to a new user that enters the space💡 */
+    const userColors = useMemo(
+      () => colours[Math.floor(Math.random() * colours.length)],
+      []
+    );
+  
+    /** 💡 Get a handle on a space instance 💡 */
+    const space = useContext(SpacesContext);
+  
+    useEffect(() => {
+      space?.enter({ name, userColors });
+    }, [space]);
+  
+    const { self, otherMembers } = useSpaceMembers(space);
+  
+    const liveCursors = useRef(null);
+
+
+
 
     const handleToolClick = (selectedTool) => {
         setTool(selectedTool);
@@ -51,71 +82,83 @@ const Whiteboard = () => {
     };
     
     return (
-        <div className='Board'>
-            {/* < Header /> */}
-            <div>
-                < Board canvasRef={canvas} ctxRef={ctx} elements={elements} setElements={setElements} color={color} tool={tool}  />
-            </div>
-            {/* set for "rect",  "pencil", "line", and circle */}
-            <div className="toolbox">
-                <img
-                    src={Select}
-                    alt="Select Tool"
-                    onClick={() => handleToolClick("select")}
-                    className={tool === "select" ? "selected" : ""}
-                />
-                <div className="separator"></div>
-                <img
-                    src={Pencil}
-                    alt="Pencil Tool"
-                    onClick={() => handleToolClick("pencil")}
-                    className={tool === "pencil" ? "selected" : ""}
-                />
-                <div className="separator"></div>
-                <img
-                    src={Circle}
-                    alt="Circle Tool"
-                    onClick={() => handleToolClick("circle")}
-                    className={tool === "circle" ? "selected" : ""}
-                />
-                <div className="separator"></div>
-                <img
-                    src={Rectangle}
-                    alt="Circle Tool"
-                    onClick={() => handleToolClick("rect")}
-                    className={tool === "rect" ? "selected" : ""}
-                />
-                <div className="separator"></div>
-                <img
-                    src={Line}
-                    alt="Line Tool"
-                    onClick={() => handleToolClick("line")}
-                    className={tool === "line" ? "selected" : ""}
-                />
-                <div className="separator"></div>
-                <img
-                    src={Undo}
-                    alt="Undo Tool"
-                    disabled={elements.length === 0}
-                    onClick={() => undo()}
-                />
-                <div className="separator"></div>
-                <img
-                    src={Redo}
-                    alt="Redo Tool"
-                    disabled={elements.history < 1}
-                    onClick={() => redo()}
-                />
-            </div>
-
-            {/* color feature soon... */}
-            {/* <div className='col-md-3 mx-auto'>
-                <div className='d-flex justify-content-center'>
-                    <label htmlFor="color">Select Color:</label>
-                    <input type="color" id='color' className='mt-1 ms-3' value='color' onChange={(e)=>setColor(e.target.value)} />
+        <>
+            <div className='Board'>
+                {/* < Header /> */}
+                <div>
+                    < Board canvasRef={canvas} ctxRef={ctx} elements={elements} setElements={setElements} color={color} tool={tool}  />
                 </div>
-            </div> */}
-        </div>
+
+                <YourCursor self={self} space={space} parentRef={liveCursors} />
+                <MemberCursors 
+                otherUsers={
+                    otherMembers.filter((m) => m.isConnected)
+                }
+                space={space}
+                selfConnectionId={self?.connectionId}
+                />
+
+                {/* set for "rect",  "pencil", "line", and circle */}
+                <div className="toolbox">
+                    <img
+                        src={Select}
+                        alt="Select Tool"
+                        onClick={() => handleToolClick("select")}
+                        className={tool === "select" ? "selected" : ""}
+                    />
+                    <div className="separator"></div>
+                    <img
+                        src={Pencil}
+                        alt="Pencil Tool"
+                        onClick={() => handleToolClick("pencil")}
+                        className={tool === "pencil" ? "selected" : ""}
+                    />
+                    <div className="separator"></div>
+                    <img
+                        src={Circle}
+                        alt="Circle Tool"
+                        onClick={() => handleToolClick("circle")}
+                        className={tool === "circle" ? "selected" : ""}
+                    />
+                    <div className="separator"></div>
+                    <img
+                        src={Rectangle}
+                        alt="Circle Tool"
+                        onClick={() => handleToolClick("rect")}
+                        className={tool === "rect" ? "selected" : ""}
+                    />
+                    <div className="separator"></div>
+                    <img
+                        src={Line}
+                        alt="Line Tool"
+                        onClick={() => handleToolClick("line")}
+                        className={tool === "line" ? "selected" : ""}
+                    />
+                    <div className="separator"></div>
+                    <img
+                        src={Undo}
+                        alt="Undo Tool"
+                        disabled={elements.length === 0}
+                        onClick={() => undo()}
+                    />
+                    <div className="separator"></div>
+                    <img
+                        src={Redo}
+                        alt="Redo Tool"
+                        disabled={elements.history < 1}
+                        onClick={() => redo()}
+                    />
+                </div>
+
+                {/* color feature soon... */}
+                {/* <div className='col-md-3 mx-auto'>
+                    <div className='d-flex justify-content-center'>
+                        <label htmlFor="color">Select Color:</label>
+                        <input type="color" id='color' className='mt-1 ms-3' value='color' onChange={(e)=>setColor(e.target.value)} />
+                    </div>
+                </div> */}
+            </div>
+        </>
     );
 };
 
